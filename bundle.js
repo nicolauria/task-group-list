@@ -23164,13 +23164,13 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 
 
@@ -23182,14 +23182,41 @@ function (_React$Component) {
   _inherits(Root, _React$Component);
 
   function Root(props) {
+    var _this;
+
     _classCallCheck(this, Root);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(Root).call(this, props));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Root).call(this, props));
+    _this.state = {
+      completed: []
+    };
+    _this.taskHandler = _this.taskHandler.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    return _this;
   }
 
   _createClass(Root, [{
+    key: "taskHandler",
+    value: function taskHandler(task) {
+      var complete = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
+      if (complete) {
+        this.state.completed.push(task);
+        this.setState({
+          completed: this.state.completed
+        });
+      } else {
+        var indexedTask = this.state.completed.indexOf(task);
+        this.state.completed.splice(indexedTask, 1);
+        this.setState({
+          completed: this.state.completed
+        });
+      }
+    }
+  }, {
     key: "render",
     value: function render() {
+      var _this2 = this;
+
       var taskGroups = {};
       this.props.tasks.forEach(function (task) {
         if (taskGroups[task.group]) {
@@ -23203,7 +23230,9 @@ function (_React$Component) {
       Object.keys(taskGroups).forEach(function (group) {
         groupsList.push(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_task_group_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
           name: group,
-          tasks: taskGroups[group]
+          groupTasks: taskGroups[group],
+          allTasks: _this2.props.tasks,
+          taskHandler: _this2.taskHandler
         }));
       });
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -23243,13 +23272,13 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 
 
@@ -23260,16 +23289,9 @@ function (_React$Component) {
   _inherits(TaskGroup, _React$Component);
 
   function TaskGroup(props) {
-    var _this;
-
     _classCallCheck(this, TaskGroup);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(TaskGroup).call(this, props));
-    _this.state = {
-      completed: []
-    };
-    _this.taskHandler = _this.taskHandler.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    return _this;
+    return _possibleConstructorReturn(this, _getPrototypeOf(TaskGroup).call(this, props));
   }
 
   _createClass(TaskGroup, [{
@@ -23295,30 +23317,12 @@ function (_React$Component) {
       };
     }
   }, {
-    key: "taskHandler",
-    value: function taskHandler(task) {
-      var complete = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-
-      if (complete) {
-        this.state.completed.push(task);
-        this.setState({
-          completed: this.state.completed
-        });
-      } else {
-        var indexedTask = this.state.completed.indexOf(task);
-        this.state.completed.splice(indexedTask, 1);
-        this.setState({
-          completed: this.state.completed
-        });
-      }
-    }
-  }, {
     key: "render",
     value: function render() {
-      var _this2 = this;
+      var _this = this;
 
-      var tasks = this.props.tasks.map(function (task) {
-        var dependencies = _this2.props.tasks.filter(function (tsk) {
+      var tasks = this.props.groupTasks.map(function (task) {
+        var dependencies = _this.props.allTasks.filter(function (tsk) {
           return task.dependencyIds.includes(tsk.id);
         });
 
@@ -23329,7 +23333,7 @@ function (_React$Component) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_task__WEBPACK_IMPORTED_MODULE_1__["default"], {
           task: task,
           unlocked: unlocked,
-          taskHandler: _this2.taskHandler
+          taskHandler: _this.props.taskHandler
         });
       });
       var arrowId = this.props.name + "-arrow";
@@ -23417,7 +23421,6 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      console.log(this.props.task.completedAt);
       var checkedVal = this.props.task.completedAt ? 'checked' : '';
       var checkbox = this.props.unlocked ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         className: "list-checkbox",

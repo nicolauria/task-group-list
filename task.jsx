@@ -17,7 +17,6 @@ class Task extends React.Component {
   }
 
   render() {
-    console.log(this.props.task.completedAt);
     const checkedVal = this.props.task.completedAt ? 'checked' : '';
     const checkbox = this.props.unlocked ?
       <input className="list-checkbox" type="checkbox" onClick={this.completeTask} checkedVal/> :

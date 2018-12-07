@@ -4,11 +4,6 @@ import Task from './task';
 class TaskGroup extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      completed: []
-    }
-
-    this.taskHandler = this.taskHandler.bind(this);
   }
 
   componentDidMount() {
@@ -30,20 +25,9 @@ class TaskGroup extends React.Component {
     }
   }
 
-  taskHandler(task, complete = true) {
-    if (complete) {
-      this.state.completed.push(task);
-      this.setState({completed: this.state.completed});
-    } else {
-      let indexedTask = this.state.completed.indexOf(task);
-      this.state.completed.splice(indexedTask, 1);
-      this.setState({completed: this.state.completed});
-    }
-  }
-
   render() {
-    const tasks = this.props.tasks.map((task) => {
-      let dependencies = this.props.tasks.filter(tsk => {
+    const tasks = this.props.groupTasks.map((task) => {
+      let dependencies = this.props.allTasks.filter(tsk => {
         return task.dependencyIds.includes(tsk.id);
       });
       let unlocked = true;
@@ -51,7 +35,7 @@ class TaskGroup extends React.Component {
         if (!dependency.completedAt) unlocked = false;
       })
       return (
-        <Task task={task} unlocked={unlocked} taskHandler={this.taskHandler}/>
+        <Task task={task} unlocked={unlocked} taskHandler={this.props.taskHandler}/>
       )
     })
     const arrowId = this.props.name + "-arrow";
