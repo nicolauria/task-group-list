@@ -36,5 +36,29 @@ If we want to convert it to a string on the front end we can use Date(obj.comple
 completedAt defaults to 0, we use this value on the frontend to check for completion
 
 ## Part 3 (HTTP API)
+This API is for checking/unchecking a task (model inside request is mongoDB).<br />
+On the client side we can use Axios to make an AJAX request:<br />
+```
+const updateTask = (task) => (
+    axios.put(`/api/tasks/${task.id}`, task)
+)
+```
+On the server side we can use express to handle the request. I didn't include all the config:
+```
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
 
-We could use an express server 
+app.put('/api/tasks/:taskId', (req, res) => {
+  Task.findByIdAndUpdate(req.params.taskId, {
+    group: req.body.group,
+    task: req.body.task,
+    dependencyIds: req.body.dependencyIds,
+    completedAt: req.body.completedAt
+  })
+  .then(task => res.json(task)
+  .catch(err => res.status(404).json({noTaskFound: 'No task found'}))
+})
+
+```
+This update function could be used to change any property of a task.
