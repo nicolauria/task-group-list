@@ -24,9 +24,12 @@ class Root extends React.Component {
       )
     })
     return (
-      <ul>
-        {groupsList}
-      </ul>
+      <div id="to-do-list">
+        <h1 id="list-header">Things to do</h1>
+        <ul>
+          {groupsList}
+        </ul>
+      </div>
     )
   }
 }

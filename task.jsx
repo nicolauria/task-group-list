@@ -7,7 +7,6 @@ class Task extends React.Component {
   }
 
   completeTask() {
-    // console.log(this.props.task.completedAt)
     if (this.props.task.completedAt) {
       this.props.task.completedAt = false;
       this.props.taskHandler(this.props.task, false)
@@ -15,19 +14,18 @@ class Task extends React.Component {
       this.props.task.completedAt = true;
       this.props.taskHandler(this.props.task, true)
     }
-    // this.setState(this.state.locked.push(ID))
   }
 
   render() {
     console.log(this.props.task.completedAt);
     const checkedVal = this.props.task.completedAt ? 'checked' : '';
     const checkbox = this.props.unlocked ?
-      <input type="checkbox" onClick={this.completeTask} checkedVal/> :
+      <input className="list-checkbox" type="checkbox" onClick={this.completeTask} checkedVal/> :
       <img className="locked-image" src="locked-1.png"/>;
     return (
-      <li>
-        {this.props.task.task}
+      <li className="task">
         {checkbox}
+        {this.props.task.task}
       </li>
     )
   }

@@ -1,3 +1,6 @@
+import React from 'react';
+import Task from './task';
+
 class TaskGroup extends React.Component {
   constructor(props) {
     super(props);
@@ -8,13 +11,21 @@ class TaskGroup extends React.Component {
     this.taskHandler = this.taskHandler.bind(this);
   }
 
+  componentDidMount() {
+    const taskList = document.getElementById(this.props.name);
+    taskList.style.display = 'none'
+  }
+
   toggleList(divName) {
     return () => {
       const taskList = document.getElementById(divName);
+      const arrowImg = document.getElementById(divName+"-arrow");
       if (taskList.style.display === 'none') {
         taskList.style.display = 'block';
+        arrowImg.style.transform = 'rotate(0deg)';
       } else {
         taskList.style.display = 'none';
+        arrowImg.style.transform = 'rotate(270deg)';
       }
     }
   }
@@ -31,7 +42,6 @@ class TaskGroup extends React.Component {
   }
 
   render() {
-    console.log('rendered');
     const tasks = this.props.tasks.map((task) => {
       let dependencies = this.props.tasks.filter(tsk => {
         return task.dependencyIds.includes(tsk.id);
@@ -44,10 +54,14 @@ class TaskGroup extends React.Component {
         <Task task={task} unlocked={unlocked} taskHandler={this.taskHandler}/>
       )
     })
+    const arrowId = this.props.name + "-arrow";
     return (
-      <div>
+      <div className="task-group">
+        <img className="down-arrow" id={arrowId} src="down-arrow.png"/>
         <h2 className="group-header" onClick={this.toggleList(this.props.name)}>{this.props.name}</h2>
-        <div id={this.props.name}>{tasks}</div>
+        <div id={this.props.name}>
+        <ul className="tasks-ul">{tasks}</ul>
+        </div>
       </div>
     )
   }

@@ -23206,7 +23206,11 @@ function (_React$Component) {
           tasks: taskGroups[group]
         }));
       });
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, groupsList);
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        id: "to-do-list"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
+        id: "list-header"
+      }, "Things to do"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, groupsList));
     }
   }]);
 
@@ -23226,6 +23230,9 @@ function (_React$Component) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _task__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./task */ "./task.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -23243,6 +23250,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+
+
 
 var TaskGroup =
 /*#__PURE__*/
@@ -23263,15 +23273,24 @@ function (_React$Component) {
   }
 
   _createClass(TaskGroup, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var taskList = document.getElementById(this.props.name);
+      taskList.style.display = 'none';
+    }
+  }, {
     key: "toggleList",
     value: function toggleList(divName) {
       return function () {
         var taskList = document.getElementById(divName);
+        var arrowImg = document.getElementById(divName + "-arrow");
 
         if (taskList.style.display === 'none') {
           taskList.style.display = 'block';
+          arrowImg.style.transform = 'rotate(0deg)';
         } else {
           taskList.style.display = 'none';
+          arrowImg.style.transform = 'rotate(270deg)';
         }
       };
     }
@@ -23298,7 +23317,6 @@ function (_React$Component) {
     value: function render() {
       var _this2 = this;
 
-      console.log('rendered');
       var tasks = this.props.tasks.map(function (task) {
         var dependencies = _this2.props.tasks.filter(function (tsk) {
           return task.dependencyIds.includes(tsk.id);
@@ -23308,23 +23326,32 @@ function (_React$Component) {
         dependencies.forEach(function (dependency) {
           if (!dependency.completedAt) unlocked = false;
         });
-        return React.createElement(Task, {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_task__WEBPACK_IMPORTED_MODULE_1__["default"], {
           task: task,
           unlocked: unlocked,
           taskHandler: _this2.taskHandler
         });
       });
-      return React.createElement("div", null, React.createElement("h2", {
+      var arrowId = this.props.name + "-arrow";
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "task-group"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+        className: "down-arrow",
+        id: arrowId,
+        src: "down-arrow.png"
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", {
         className: "group-header",
         onClick: this.toggleList(this.props.name)
-      }, this.props.name), React.createElement("div", {
+      }, this.props.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: this.props.name
-      }, tasks));
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+        className: "tasks-ul"
+      }, tasks)));
     }
   }]);
 
   return TaskGroup;
-}(React.Component);
+}(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
 
 /* harmony default export */ __webpack_exports__["default"] = (TaskGroup);
 
@@ -23379,15 +23406,13 @@ function (_React$Component) {
   _createClass(Task, [{
     key: "completeTask",
     value: function completeTask() {
-      // console.log(this.props.task.completedAt)
       if (this.props.task.completedAt) {
         this.props.task.completedAt = false;
         this.props.taskHandler(this.props.task, false);
       } else {
         this.props.task.completedAt = true;
         this.props.taskHandler(this.props.task, true);
-      } // this.setState(this.state.locked.push(ID))
-
+      }
     }
   }, {
     key: "render",
@@ -23395,6 +23420,7 @@ function (_React$Component) {
       console.log(this.props.task.completedAt);
       var checkedVal = this.props.task.completedAt ? 'checked' : '';
       var checkbox = this.props.unlocked ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        className: "list-checkbox",
         type: "checkbox",
         onClick: this.completeTask,
         checkedVal: true
@@ -23402,7 +23428,9 @@ function (_React$Component) {
         className: "locked-image",
         src: "locked-1.png"
       });
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, this.props.task.task, checkbox);
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+        className: "task"
+      }, checkbox, this.props.task.task);
     }
   }]);
 
