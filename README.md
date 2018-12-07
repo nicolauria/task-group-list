@@ -15,7 +15,8 @@ This taskHandler function updates the state of the Root component upon task comp
 causes a rerender of the task elements.
 
 ## Part 2 (SQL Schema)
-```CREATE TABLE tasks (
+```
+CREATE TABLE tasks (
   id PRIMARY KEY,
   group VARCHAR(100) NOT NULL,
   task VARCHAR(255) UNIQUE NOT NULL,
