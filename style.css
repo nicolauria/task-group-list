@@ -1,0 +1,12 @@
+.group-header {
+  cursor: pointer;
+}
+
+.task-list {
+  display: none;
+}
+
+.locked-image {
+  width: 20px;
+  height: 20px;
+}
