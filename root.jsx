@@ -1,5 +1,5 @@
 import React from 'react';
-// import TaskGroup from './task-group.jsx';
+import TaskGroup from './task-group.jsx';
 import Task from './task';
 
 class Root extends React.Component {

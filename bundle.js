@@ -23152,7 +23152,8 @@ if (false) {} else {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _task__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./task */ "./task.jsx");
+/* harmony import */ var _task_group_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./task-group.jsx */ "./task-group.jsx");
+/* harmony import */ var _task__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./task */ "./task.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -23171,7 +23172,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
- // import TaskGroup from './task-group.jsx';
+
 
 
 
@@ -23200,7 +23201,7 @@ function (_React$Component) {
       });
       var groupsList = [];
       Object.keys(taskGroups).forEach(function (group) {
-        groupsList.push(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(TaskGroup, {
+        groupsList.push(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_task_group_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
           name: group,
           tasks: taskGroups[group]
         }));
@@ -23213,6 +23214,119 @@ function (_React$Component) {
 }(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
 
 /* harmony default export */ __webpack_exports__["default"] = (Root);
+
+/***/ }),
+
+/***/ "./task-group.jsx":
+/*!************************!*\
+  !*** ./task-group.jsx ***!
+  \************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+var TaskGroup =
+/*#__PURE__*/
+function (_React$Component) {
+  _inherits(TaskGroup, _React$Component);
+
+  function TaskGroup(props) {
+    var _this;
+
+    _classCallCheck(this, TaskGroup);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(TaskGroup).call(this, props));
+    _this.state = {
+      completed: []
+    };
+    _this.taskHandler = _this.taskHandler.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    return _this;
+  }
+
+  _createClass(TaskGroup, [{
+    key: "toggleList",
+    value: function toggleList(divName) {
+      return function () {
+        var taskList = document.getElementById(divName);
+
+        if (taskList.style.display === 'none') {
+          taskList.style.display = 'block';
+        } else {
+          taskList.style.display = 'none';
+        }
+      };
+    }
+  }, {
+    key: "taskHandler",
+    value: function taskHandler(task) {
+      var complete = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
+      if (complete) {
+        this.state.completed.push(task);
+        this.setState({
+          completed: this.state.completed
+        });
+      } else {
+        var indexedTask = this.state.completed.indexOf(task);
+        this.state.completed.splice(indexedTask, 1);
+        this.setState({
+          completed: this.state.completed
+        });
+      }
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      console.log('rendered');
+      var tasks = this.props.tasks.map(function (task) {
+        var dependencies = _this2.props.tasks.filter(function (tsk) {
+          return task.dependencyIds.includes(tsk.id);
+        });
+
+        var unlocked = true;
+        dependencies.forEach(function (dependency) {
+          if (!dependency.completedAt) unlocked = false;
+        });
+        return React.createElement(Task, {
+          task: task,
+          unlocked: unlocked,
+          taskHandler: _this2.taskHandler
+        });
+      });
+      return React.createElement("div", null, React.createElement("h2", {
+        className: "group-header",
+        onClick: this.toggleList(this.props.name)
+      }, this.props.name), React.createElement("div", {
+        id: this.props.name
+      }, tasks));
+    }
+  }]);
+
+  return TaskGroup;
+}(React.Component);
+
+/* harmony default export */ __webpack_exports__["default"] = (TaskGroup);
 
 /***/ }),
 
