@@ -21,8 +21,8 @@ causes a rerender of the task elements.
   task VARCHAR(255) UNIQUE NOT NULL,
   dependencyIds integer[],
   completedAt INTEGER DEFAULT 0
-)```
-
+)
+```
 id is assigned upon task creation
 to assign dependencies we use a dropdown of already created tasks,
 each task selected as a dependency would have its id added to the dependency array
