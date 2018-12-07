@@ -15,6 +15,7 @@ This taskHandler function updates the state of the Root component upon task comp
 causes a rerender of the task elements.
 
 ## Part 2 (SQL Schema)
+note: dependencyIds column is structured according to PostgreSQL array definition
 ```
 CREATE TABLE tasks (
   id PRIMARY KEY,
@@ -24,14 +25,12 @@ CREATE TABLE tasks (
   completedAt INTEGER DEFAULT 0
 )
 ```
-id is assigned upon task creation
+id is assigned upon task creation<br />
 to assign dependencies we use a dropdown of already created tasks,
-each task selected as a dependency would have its id added to the dependency array
+each task selected as a dependency will have its id added to the dependency array<br />
 
-Unique constraint on task assures no duplicated entries
+Unique constraint on task assures no duplicated entries<br />
 
-dependencyIds column is structured according to PostgreSQL array definition
-
-the completedAt stores a date timestamp created using Date.now().
-If we want to convert it to a string on the front end we can use Date(obj.completedAt);
+the completedAt stores a date timestamp created using Date.now().<br />
+If we want to convert it to a string on the front end we can use Date(obj.completedAt);<br />
 completedAt defaults to 0, we use this value on the frontend to check for completion
