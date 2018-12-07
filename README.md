@@ -34,3 +34,7 @@ Unique constraint on task assures no duplicated entries<br />
 The completedAt stores a date timestamp integer created using Date.now().<br />
 If we want to convert it to a string on the front end we can use Date(obj.completedAt);<br />
 completedAt defaults to 0, we use this value on the frontend to check for completion
+
+## Part 3 (HTTP API)
+
+We could use an express server 
