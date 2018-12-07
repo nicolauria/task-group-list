@@ -25,12 +25,12 @@ CREATE TABLE tasks (
   completedAt INTEGER DEFAULT 0
 )
 ```
-id is assigned upon task creation<br />
-to assign dependencies we use a dropdown of already created tasks,
+Id is assigned upon task creation<br />
+To assign dependencies we use a dropdown of already created tasks,
 each task selected as a dependency will have its id added to the dependency array<br />
 
 Unique constraint on task assures no duplicated entries<br />
 
-the completedAt stores a date timestamp created using Date.now().<br />
+The completedAt stores a date timestamp integer created using Date.now().<br />
 If we want to convert it to a string on the front end we can use Date(obj.completedAt);<br />
 completedAt defaults to 0, we use this value on the frontend to check for completion
