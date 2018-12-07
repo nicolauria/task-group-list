@@ -1,5 +1,7 @@
 # Wonderschool Coding Challenge
 
+* The node_modules folder has been gitignored. The js/jsx files were bundled with Webpack.
+
 ## Part 1 (React UI)
 I separated the task list into 3 main components:
 * Root
