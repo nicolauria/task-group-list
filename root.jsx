@@ -7,10 +7,11 @@ class Root extends React.Component {
     this.state = {
       completed: []
     }
-    this.taskHandler = this.taskHandler.bind(this);
+    this.updateCompletedTasks = this.updateCompletedTasks.bind(this);
   }
 
-  taskHandler(task, complete = true) {
+  // function to trigger rerender of root component
+  updateCompletedTasks(task, complete = true) {
     if (complete) {
       this.state.completed.push(task);
       this.setState({completed: this.state.completed});
@@ -22,6 +23,7 @@ class Root extends React.Component {
   }
 
   render() {
+    // separate tasks into a groups object
     const taskGroups = {};
     this.props.tasks.forEach(task => {
       if (taskGroups[task.group]) {
@@ -31,13 +33,15 @@ class Root extends React.Component {
         taskGroups[task.group].push(task);
       }
     });
+    // use the groups object to create TaskGroup components
     const groupsList = [];
     Object.keys(taskGroups).forEach(group => {
       groupsList.push(
+        // each taskGroup needs access to allTasks to check dependencies
         <TaskGroup name={group}
                    groupTasks={taskGroups[group]}
                    allTasks={this.props.tasks}
-                   taskHandler={this.taskHandler}/>
+                   updateCompletedTasks={this.updateCompletedTasks}/>
       )
     })
     return (

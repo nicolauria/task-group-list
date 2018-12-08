@@ -9,10 +9,10 @@ class Task extends React.Component {
   completeTask() {
     if (this.props.task.completedAt) {
       this.props.task.completedAt = false;
-      this.props.taskHandler(this.props.task, false)
+      this.props.updateCompletedTasks(this.props.task, false)
     } else {
       this.props.task.completedAt = true;
-      this.props.taskHandler(this.props.task, true)
+      this.props.updateCompletedTasks(this.props.task, true)
     }
   }
 

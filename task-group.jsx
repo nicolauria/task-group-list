@@ -6,6 +6,7 @@ class TaskGroup extends React.Component {
     super(props);
   }
 
+  // list details are not displayed until toggled
   componentDidMount() {
     const taskList = document.getElementById(this.props.name);
     taskList.style.display = 'none'
@@ -26,6 +27,7 @@ class TaskGroup extends React.Component {
   }
 
   render() {
+    // check completion of each tasks dependencies and built task components
     const tasks = this.props.groupTasks.map((task) => {
       let dependencies = this.props.allTasks.filter(tsk => {
         return task.dependencyIds.includes(tsk.id);
@@ -35,7 +37,9 @@ class TaskGroup extends React.Component {
         if (!dependency.completedAt) unlocked = false;
       })
       return (
-        <Task task={task} unlocked={unlocked} taskHandler={this.props.taskHandler}/>
+        <Task task={task}
+              unlocked={unlocked}
+              updateCompletedTasks={this.props.updateCompletedTasks}/>
       )
     })
     const arrowId = this.props.name + "-arrow";
@@ -44,7 +48,7 @@ class TaskGroup extends React.Component {
         <img className="down-arrow" id={arrowId} src="down-arrow.png"/>
         <h2 className="group-header" onClick={this.toggleList(this.props.name)}>{this.props.name}</h2>
         <div id={this.props.name}>
-        <ul className="tasks-ul">{tasks}</ul>
+          <ul className="tasks-ul">{tasks}</ul>
         </div>
       </div>
     )
